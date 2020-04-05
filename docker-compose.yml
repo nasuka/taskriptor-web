@@ -1,0 +1,28 @@
+version: "3.7"
+services:
+  backend:
+    build:
+      context: ./
+    image: naska/taskriptor
+    ports:
+      - 8000:80
+    environment:
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+      - MYSQL_ROOT_HOST=localhost
+  mysql:
+    image: mysql:8.0.18
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+      - MYSQL_ROOT_HOST=localhost
+    volumes:
+      - ./db:/var/lib/mysql
